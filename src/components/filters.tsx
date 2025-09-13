@@ -27,6 +27,7 @@ import { Box, Button, Divider, Flex, Menu, Portal } from "@mantine/core";
 import { eventHasModKey, useForceRender } from "trutil";
 import { useContextMenu } from "./contextmenu";
 import { MemoSectionsContextMenu, getSectionsMap } from "./sectionscontextmenu";
+import { useTranslation } from "react-i18next";
 
 export interface TorrentFilter {
     id: string,
@@ -574,7 +575,7 @@ export const Filters = React.memo(function Filters({ torrents, currentFilters, s
                     Recursive Directories
                 </Menu.Item>
             </MemoSectionsContextMenu>
-            {sections[sectionsMap.Status].visible && <div style={{ order: sectionsMap.Status }}>
+            {sections[sectionsMap.Status]?.visible && <div style={{ order: sectionsMap.Status }}>
                 <Divider mx="sm" label="Status" labelPosition="center" />
                 {statusFilters.map((f) =>
                     (f.required === true || statusFiltersVisibility[f.name]) && <FilterRow key={`status-${f.name}`}
@@ -582,13 +583,13 @@ export const Filters = React.memo(function Filters({ torrents, currentFilters, s
                         count={torrents.filter(f.filter).length}
                         currentFilters={currentFilters} setCurrentFilters={setCurrentFilters} />)}
             </div>}
-            {sections[sectionsMap.Directories].visible && <div style={{ order: sectionsMap.Directories }}>
+            {sections[sectionsMap.Directories]?.visible && <div style={{ order: sectionsMap.Directories }}>
                 <Divider mx="sm" mt="md" label="Directories" labelPosition="center" />
                 {dirs.map((d) =>
                     <DirFilterRow key={`dir-${d.path}`} id={`dir-${d.path}`}
                         dir={d} expandedReducer={expandedReducer} {...{ torrents, currentFilters, setCurrentFilters }} />)}
             </div>}
-            {sections[sectionsMap.Labels].visible && <div style={{ order: sectionsMap.Labels }}>
+            {sections[sectionsMap.Labels]?.visible && <div style={{ order: sectionsMap.Labels }}>
                 <Divider mx="sm" mt="md" label="Labels" labelPosition="center" />
                 <FilterRow
                     id="nolabels" filter={noLabelsFilter}
@@ -599,7 +600,7 @@ export const Filters = React.memo(function Filters({ torrents, currentFilters, s
                         count={labels[label]}
                         currentFilters={currentFilters} setCurrentFilters={setCurrentFilters} />)}
             </div>}
-            {sections[sectionsMap.Trackers].visible && <div style={{ order: sectionsMap.Trackers }}>
+            {sections[sectionsMap.Trackers]?.visible && <div style={{ order: sectionsMap.Trackers }}>
                 <Divider mx="sm" mt="md" label="Trackers" labelPosition="center" />
                 {Object.keys(trackers).sort().map((tracker) =>
                     <TrackerFilterRow key={`trackers-${tracker}`} tracker={tracker}

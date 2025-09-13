@@ -27,6 +27,7 @@ import { pathMapFromServer, pathMapToServer } from "trutil";
 import * as Icon from "react-bootstrap-icons";
 import { useServerSelectedTorrents, useServerTorrentData } from "rpc/torrent";
 import { useHotkeysContext } from "hotkeys";
+import { useTranslation } from "react-i18next";
 const { TAURI, dialogOpen } = await import(/* webpackChunkName: "taurishim" */"taurishim");
 
 export interface ModalState {
@@ -53,6 +54,8 @@ interface SaveCancelModalProps extends ModalProps {
 }
 
 export function SaveCancelModal({ onSave, onClose, children, saveLoading, ...other }: SaveCancelModalProps) {
+    const { t } = useTranslation();
+
     return (
         <HkModal onClose={onClose} {...other}>
             <Divider my="sm" />
@@ -60,9 +63,9 @@ export function SaveCancelModal({ onSave, onClose, children, saveLoading, ...oth
             <Divider my="sm" />
             <Group position="center" spacing="md">
                 <Button onClick={onSave} variant="filled" data-autofocus>
-                    {saveLoading === true ? <Loader size="1rem" /> : "Save"}
+                    {saveLoading === true ? <Loader size="1rem" /> : t('common.save')}
                 </Button>
-                <Button onClick={onClose} variant="light">Cancel</Button>
+                <Button onClick={onClose} variant="light">{t('common.cancel')}</Button>
             </Group>
         </HkModal>
     );
@@ -70,6 +73,7 @@ export function SaveCancelModal({ onSave, onClose, children, saveLoading, ...oth
 
 export function LimitedNamesList({ names, limit }: { names: string[], limit?: number }) {
     limit = limit ?? 5;
+    const { t: translate } = useTranslation();
     const t = names.slice(0, limit);
 
     return <>
@@ -88,14 +92,15 @@ export function LimitedNamesList({ names, limit }: { names: string[], limit?: nu
 export function TorrentsNames() {
     const serverData = useServerTorrentData();
     const serverSelected = useServerSelectedTorrents();
+    const { t } = useTranslation();
 
     const allNames = useMemo<string[]>(() => {
         if (serverData.current == null || serverSelected.size === 0) {
-            return ["No torrent selected"];
+            return [t('table.noResults')];
         }
         return serverData.torrents.filter(
             (t) => serverSelected.has(t.id)).map((t) => t.name);
-    }, [serverData, serverSelected]);
+    }, [serverData, serverSelected, t]);
 
     return <LimitedNamesList names={allNames} />;
 }

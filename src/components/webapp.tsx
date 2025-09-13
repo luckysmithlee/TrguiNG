@@ -23,9 +23,11 @@ import { ClientContext, TransmissionClient } from "rpc/client";
 import { Server } from "./server";
 import { App } from "./app";
 import type { ServerTabsRef } from "./servertabs";
+import { useTranslation } from "react-i18next";
 
 export default function WebApp() {
     const config = useContext(ConfigContext);
+    const { t } = useTranslation();
 
     const { serverConfig, client } = useMemo(() => {
         const serverConfig: ServerConfig = config.values.servers.length > 0

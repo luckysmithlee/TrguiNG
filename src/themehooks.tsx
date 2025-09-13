@@ -20,6 +20,7 @@ import { useToggle } from "@mantine/hooks";
 import type { StyleOverrides } from "config";
 import { ConfigContext } from "config";
 import React, { useContext, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface FontsizeContextValue {
     value: number,

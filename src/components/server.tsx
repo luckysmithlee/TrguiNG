@@ -37,6 +37,7 @@ import { useAppHotkeys, useHotkeysContext } from "hotkeys";
 import { SplitLayout } from "./splitlayout";
 import { useDisclosure, useToggle } from "@mantine/hooks";
 import type { ServerTabsRef } from "./servertabs";
+import { useTranslation } from "react-i18next";
 
 function currentFiltersReducer(
     oldFilters: TorrentFilter[],

@@ -23,6 +23,7 @@ import * as Icon from "react-bootstrap-icons";
 import type { ClientManager } from "../clientmanager";
 import { ActionIcon, Menu, Tabs } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
+import { useTranslation } from "react-i18next";
 
 const { appWindow, invoke } = await import(/* webpackChunkName: "taurishim" */"taurishim");
 
@@ -41,6 +42,7 @@ export interface ServerTabsRef {
 
 export const ServerTabs = React.forwardRef<ServerTabsRef, ServerTabsProps>(function ServerTabs(props, ref) {
     const config = useContext(ConfigContext);
+    const { t } = useTranslation();
 
     const [tabs, setTabs] = useState({
         openTabs: config.getOpenTabs(),

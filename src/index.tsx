@@ -17,6 +17,7 @@
  */
 
 import "css/loader.css";
+import "./i18n";
 import { Config, ConfigContext } from "./config";
 import { createRoot } from "react-dom/client";
 import type { Root } from "react-dom/client";

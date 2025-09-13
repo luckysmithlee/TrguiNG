@@ -21,6 +21,7 @@ import type { SplitType } from "config";
 import { ConfigContext } from "config";
 import React, { useCallback, useContext } from "react";
 import Split from "react-split";
+import { useTranslation } from "react-i18next";
 
 interface SplitLayoutProps {
     mainSplit: SplitType,
@@ -33,6 +34,7 @@ interface SplitLayoutProps {
 // Depending on mainSplit it may actually be "left", "midle", "right".
 export function SplitLayout({ mainSplit, left, right, bottom }: SplitLayoutProps) {
     const config = useContext(ConfigContext);
+    const { t } = useTranslation();
 
     const onVerticalDragEnd = useCallback((sizes: [number, number]) => {
         config.setSashSizes("vertical", sizes);

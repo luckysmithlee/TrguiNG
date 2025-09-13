@@ -19,6 +19,7 @@
 import { ConfigContext, ServerConfigContext } from "../config";
 import type { ServerConfig } from "../config";
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Server } from "../components/server";
 import { ClientManager } from "../clientmanager";
 import { ActionIcon, Box, Button, Flex, Menu, Stack, useMantineColorScheme } from "@mantine/core";
@@ -46,6 +47,7 @@ interface PassEventData {
 function CreateTorrentButton() {
     const config = useContext(ConfigContext);
     const { colorScheme } = useMantineColorScheme();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const unlisten = appWindow.listen<PassEventData>("pass-from-window", ({ payload: data }) => {
@@ -72,7 +74,7 @@ function CreateTorrentButton() {
             variant="default"
             size="lg"
             onClick={onClick}
-            title={`Create new torrent file (${modKeyString()} + T)`}
+            title={t('app.createTorrentShortcut', { modKey: modKeyString() })}
             my="auto"
         >
             <Icon.Stars size="1.1rem" />
@@ -92,6 +94,7 @@ export function App(props: React.PropsWithChildren) {
 
 export default function TauriApp() {
     const config = useContext(ConfigContext);
+    const { t } = useTranslation();
     const clientManager = useMemo(() => {
         const cm = new ClientManager(config);
         config.getOpenTabs().forEach((tab) => {
@@ -143,7 +146,7 @@ export default function TauriApp() {
                     <CreateTorrentButton />
                     <ActionIcon
                         size="lg" variant="default" my="auto"
-                        title="Configure servers"
+                        title={t('app.configureServers')}
                         onClick={serverConfigHandlers.open}>
                         <Icon.GearFill size="1.1rem" />
                     </ActionIcon>
@@ -155,17 +158,17 @@ export default function TauriApp() {
                                 hostname={clientManager.getHostname(currentServer.name)}
                                 tabsRef={tabsRef}
                                 toolbarExtra={!showTabStrip && <>
-                                    <ToolbarButton title={`Create torrent (${modKeyString()} + T)`} onClick={onCreateTorrent}>
+                                    <ToolbarButton title={t('app.createTorrentShortcut', { modKey: modKeyString() })} onClick={onCreateTorrent}>
                                         <Icon.Stars size="1.5rem" />
                                     </ToolbarButton>
-                                    <ToolbarButton title="Configure servers" onClick={serverConfigHandlers.open}>
+                                    <ToolbarButton title={t('app.configureServers')} onClick={serverConfigHandlers.open}>
                                         <Icon.GearFill size="1.5rem" />
                                     </ToolbarButton>
                                     {tabsRef.current?.getOpenTabs() !== undefined && tabsRef.current?.getOpenTabs()?.length > 1 &&
                                         <Menu shadow="md" width="12rem" withinPortal returnFocus
                                             middlewares={{ shift: true, flip: true }}>
                                             <Menu.Target>
-                                                <ToolbarButton title="Switch server">
+                                                <ToolbarButton title={t('app.switchServer')}>
                                                     <Icon.Diagram2 size="1.5rem" />
                                                 </ToolbarButton>
                                             </Menu.Target>
@@ -190,7 +193,7 @@ export default function TauriApp() {
                             })}
                             <Box sx={{ flexGrow: 1 }} />
                             <Button onClick={serverConfigHandlers.open}>
-                                Configure servers
+                                {t('app.configureServers')}
                             </Button>
                         </Stack>
                     </Flex>

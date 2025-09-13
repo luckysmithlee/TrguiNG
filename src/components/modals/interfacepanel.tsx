@@ -27,6 +27,7 @@ import type { AddTorrentPriorityOption, AddTorrentStartOption, ColorSetting, Del
 import { ColorSchemeToggle } from "components/miscbuttons";
 import { Label } from "./common";
 import * as Icon from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 const { TAURI, invoke } = await import(/* webpackChunkName: "taurishim" */"taurishim");
 
 export interface InterfaceFormValues {
@@ -52,6 +53,7 @@ export function InterfaceSettigsPanel<V extends InterfaceFormValues>(props: { fo
     const theme = useMantineTheme();
     const { style, setStyle } = useGlobalStyleOverrides();
     const [systemFonts, setSystemFonts] = useState<string[]>(["Default"]);
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         if (TAURI) {
@@ -128,6 +130,22 @@ export function InterfaceSettigsPanel<V extends InterfaceFormValues>(props: { fo
                         </Grid.Col>
                         <Grid.Col span={1}>
                             <ColorSchemeToggle />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                            Language
+                        </Grid.Col>
+                        <Grid.Col span={5}>
+                            <NativeSelect
+                                data={[
+                                    { value: 'en', label: 'English' },
+                                    { value: 'zh', label: '中文' }
+                                ]}
+                                value={i18n.language}
+                                onChange={(e) => {
+                                    i18n.changeLanguage(e.currentTarget.value);
+                                    localStorage.setItem('i18nextLng', e.currentTarget.value);
+                                }}
+                            />
                         </Grid.Col>
                         <Grid.Col span={3}>
                             Font

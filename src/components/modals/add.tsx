@@ -20,6 +20,7 @@ import { ActionIcon, Box, Button, Checkbox, Divider, Flex, Group, Menu, Segmente
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ModalState, LocationData } from "./common";
 import { HkModal, LimitedNamesList, TorrentLabels, TorrentLocation, useTorrentLocation } from "./common";
+import { useTranslation } from "react-i18next";
 import type { PriorityNumberType } from "rpc/transmission";
 import { PriorityColors, PriorityStrings } from "rpc/transmission";
 import type { Torrent } from "rpc/torrent";
@@ -167,6 +168,7 @@ function TabSwitchDropdown({ tabsRef }: { tabsRef: React.RefObject<ServerTabsRef
 export function AddMagnet(props: AddCommonModalProps) {
     const serverData = useServerTorrentData();
     const [magnet, setMagnet] = useState<string>("");
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (props.opened) {
@@ -269,7 +271,7 @@ export function AddMagnet(props: AddCommonModalProps) {
         <HkModal opened={true} onClose={close} centered size="lg"
             styles={{ title: { flexGrow: 1 } }}
             title={<Flex w="100%" align="center" justify="space-between">
-                <span>Add torrent by magnet link or URL</span>
+                <span>{t('modal.addMagnet')}</span>
                 {TAURI && <TabSwitchDropdown tabsRef={props.tabsRef} />}
             </Flex>} >
             <Divider my="sm" />
@@ -286,9 +288,9 @@ export function AddMagnet(props: AddCommonModalProps) {
             <Group position="center" spacing="md">
                 <Button onClick={onAdd} variant="filled" data-autofocus
                     disabled={existingTorrent !== undefined && (magnetData?.trackers.length ?? 0) === 0}>
-                    {existingTorrent === undefined ? "Add" : "Add trackers"}
+                    {existingTorrent === undefined ? t('common.add') : t('toolbar.addTrackers')}
                 </Button>
-                <Button onClick={props.close} variant="light">Cancel</Button>
+                <Button onClick={props.close} variant="light">{t('common.cancel')}</Button>
             </Group>
         </HkModal>}
     </>;
@@ -460,6 +462,7 @@ export function AddTorrent(props: AddCommonModalProps) {
     const serverData = useServerTorrentData();
     const common = useCommonProps(props.opened);
     const [torrentData, setTorrentData] = useState<TorrentFileData[]>();
+    const { t } = useTranslation();
 
     const existingTorrent = useMemo(() => {
         if (torrentData !== undefined && torrentData.length === 1) {
@@ -616,7 +619,7 @@ export function AddTorrent(props: AddCommonModalProps) {
                     body: { display: fullScreen ? "flex" : "block", flexDirection: "column", flexGrow: 1 },
                 }}
                 title={<Flex w="100%" align="center">
-                    <span>Add torrent</span>
+                    <span>{t('modal.addTorrent')}</span>
                     <Box sx={{ flexGrow: 1 }} />
                     {TAURI && <>
                         <TabSwitchDropdown tabsRef={props.tabsRef} />
@@ -659,9 +662,9 @@ export function AddTorrent(props: AddCommonModalProps) {
                 <Group position="center" spacing="md">
                     <Button onClick={onAdd} variant="filled" data-autofocus
                         disabled={torrentExists && torrentData[0].trackers.length === 0}>
-                        {!torrentExists ? "Add" : "Add trackers"}
+                        {!torrentExists ? t('common.add') : t('toolbar.addTrackers')}
                     </Button>
-                    <Button onClick={modalClose} variant="light">Cancel</Button>
+                    <Button onClick={modalClose} variant="light">{t('common.cancel')}</Button>
                 </Group>
             </HkModal >}
     </>);

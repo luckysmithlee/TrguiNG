@@ -24,11 +24,13 @@ import { useRemoveTorrents } from "queries";
 import { notifications } from "@mantine/notifications";
 import { useServerSelectedTorrents } from "rpc/torrent";
 import { ConfigContext } from "config";
+import { useTranslation } from "react-i18next";
 
 export function RemoveModal(props: ModalState) {
     const config = useContext(ConfigContext);
     const serverSelected = useServerSelectedTorrents();
     const [deleteData, setDeleteData] = useState<boolean>(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (props.opened) {
@@ -58,7 +60,7 @@ export function RemoveModal(props: ModalState) {
                 onError: (e) => {
                     console.error("Error removing torrents", e);
                     notifications.show({
-                        message: "Error removing torrents",
+                        message: t('error.removeTorrents'),
                         color: "red",
                     });
                 },
@@ -68,21 +70,21 @@ export function RemoveModal(props: ModalState) {
     }, [remove, serverSelected, deleteData, props]);
 
     return (
-        <HkModal opened={props.opened} onClose={props.close} title="Remove torrents" centered size="lg">
+        <HkModal opened={props.opened} onClose={props.close} title={t('modal.removeTorrent')} centered size="lg">
             <Divider my="sm" />
-            <Text mb="md">Are you sure you want to remove following torrents?</Text>
+            <Text mb="md">{t('modal.removeTorrentConfirm')}</Text>
             <TorrentsNames />
             <Checkbox
-                label="Delete torrent data"
+                label={t('modal.deleteTorrentData')}
                 checked={deleteData}
                 onChange={onDeleteDataChanged}
                 my="xl" />
             <Divider my="sm" />
             <Group position="center" spacing="md">
                 <Button onClick={onDelete} variant="filled" color="red" data-autofocus>
-                    {deleteData ? "Delete" : "Remove"}
+                    {deleteData ? t('common.delete') : t('common.remove')}
                 </Button>
-                <Button onClick={props.close} variant="light">Cancel</Button>
+                <Button onClick={props.close} variant="light">{t('common.cancel')}</Button>
             </Group>
         </HkModal>
     );

@@ -26,6 +26,7 @@ import TauriLogo from "svg/tauri.svg";
 import AppLogo from "svg/app.svg";
 import { Github } from "react-bootstrap-icons";
 import { UAParser } from "ua-parser-js";
+import { useTranslation } from "react-i18next";
 const { TAURI } = await import(/* webpackChunkName: "taurishim" */"taurishim");
 
 interface AppVersion {
@@ -38,6 +39,7 @@ export const appVersion: AppVersion = appVersionJson;
 
 export function VersionModal({ opened, close }: ModalState) {
     const [frontend, setFrontend] = useState<string>();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (opened && frontend === undefined) {
@@ -51,30 +53,28 @@ export function VersionModal({ opened, close }: ModalState) {
 
     return (
         <HkModal opened={opened} onClose={close} size="lg" centered p="lg">
-            <Title order={2} mb="lg">TrguiNG</Title>
+            <Title order={2} mb="lg">{t('app.title')}</Title>
             <Text>
-                Remote interface for&nbsp;
-                <Anchor href="https://transmissionbt.com/" target="_blank" rel="noreferrer">Transmission</Anchor>
-                &nbsp;torrent daemon
+                {t('app.description')}
             </Text>
             <Divider px="sm" my="xl" />
             <Flex gap="md" align="center">
                 <AppLogo style={{ flexShrink: 0 }} />
                 <Grid>
-                    <Grid.Col span={4}>Version</Grid.Col>
+                    <Grid.Col span={4}>{t('app.version')}</Grid.Col>
                     <Grid.Col span={8}>{appVersion.gitVersion}</Grid.Col>
-                    <Grid.Col span={4}>Frontend</Grid.Col>
+                    <Grid.Col span={4}>{t('app.frontend')}</Grid.Col>
                     <Grid.Col span={8}>{frontend}</Grid.Col>
-                    <Grid.Col span={4}>Build date</Grid.Col>
+                    <Grid.Col span={4}>{t('app.buildDate')}</Grid.Col>
                     <Grid.Col span={8}>{new Date(appVersion.buildDate).toLocaleString()}</Grid.Col>
-                    <Grid.Col span={4}>Source code</Grid.Col>
+                    <Grid.Col span={4}>{t('app.sourceCode')}</Grid.Col>
                     <Grid.Col span={8}><Box component="span" mr="sm"><Github /></Box><Anchor href="https://github.com/openscopeproject/trguing/" target="_blank" rel="noreferrer">github</Anchor></Grid.Col>
-                    <Grid.Col mt="xl">{TAURI && <Anchor href="https://db-ip.com" target="_blank" rel="noreferrer">IP Geolocation by DB-IP</Anchor>}</Grid.Col>
+                    <Grid.Col mt="xl">{TAURI && <Anchor href="https://db-ip.com" target="_blank" rel="noreferrer">{t('app.ipGeolocation')}</Anchor>}</Grid.Col>
                 </Grid>
             </Flex>
             <Divider px="sm" my="xl" />
             <Text align="center">
-                powered by
+                {t('app.poweredBy')}
             </Text>
             <Flex justify="center">
                 <Anchor href="https://react.dev/" target="_blank" rel="noreferrer"><ReactLogo /></Anchor>

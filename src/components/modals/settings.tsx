@@ -31,6 +31,7 @@ import { useForm } from "@mantine/form";
 import { UAParser } from "ua-parser-js";
 import type { InterfaceFormValues } from "./interfacepanel";
 import { InterfaceSettigsPanel } from "./interfacepanel";
+import { useTranslation } from "react-i18next";
 const { TAURI, invoke } = await import(/* webpackChunkName: "taurishim" */"taurishim");
 
 interface FormValues extends InterfaceFormValues {
@@ -184,6 +185,7 @@ const bigSwitchStyles = { track: { flexGrow: 1 } };
 
 function IntegrationsPanel({ form }: { form: UseFormReturnType<FormValues> }) {
     const platform = useMemo(() => UAParser().os.name ?? "unknown", []);
+    const { t } = useTranslation();
 
     const [autostart, setAutostart] = useState(false);
 
@@ -210,18 +212,18 @@ function IntegrationsPanel({ form }: { form: UseFormReturnType<FormValues> }) {
 
     return (
         <Grid align="center" gutter="md">
-            <Grid.Col span={6}>Delete successfully added torrent files</Grid.Col>
+            <Grid.Col span={6}>{t('settings.deleteAdded')}</Grid.Col>
             <Grid.Col span={2}>
                 <Switch onLabel="ON" offLabel="OFF" size="xl" styles={bigSwitchStyles}
                     {...form.getInputProps("app.deleteAdded", { type: "checkbox" })} />
             </Grid.Col>
             <Grid.Col span={4}></Grid.Col>
-            <Grid.Col span={6}>Show notifications for completed torrents</Grid.Col>
+            <Grid.Col span={6}>{t('settings.toastNotifications')}</Grid.Col>
             <Grid.Col span={2}>
                 <Switch onLabel="ON" offLabel="OFF" size="xl" styles={bigSwitchStyles}
                     {...form.getInputProps("app.toastNotifications", { type: "checkbox" })} />
             </Grid.Col>
-            <Grid.Col span={2}>Play sound</Grid.Col>
+            <Grid.Col span={2}>{t('settings.toastNotificationSound')}</Grid.Col>
             <Grid.Col span={2}>
                 <Switch onLabel="ON" offLabel="OFF" size="xl" styles={bigSwitchStyles}
                     {...form.getInputProps("app.toastNotificationSound", { type: "checkbox" })} />
@@ -237,7 +239,7 @@ function IntegrationsPanel({ form }: { form: UseFormReturnType<FormValues> }) {
                 <Grid.Col span={3}><Button onClick={associateTorrent}>.torrent files</Button></Grid.Col>
                 <Grid.Col span={3}><Button onClick={associateMagnet}>magnet links</Button></Grid.Col>
             </>}
-            <Grid.Col span={6}>Show tray icon</Grid.Col>
+            <Grid.Col span={6}>{t('settings.showTrayIcon')}</Grid.Col>
             <Grid.Col span={2}>
                 <Switch onLabel="ON" offLabel="OFF" size="xl" styles={bigSwitchStyles}
                     checked={form.values.app.showTrayIcon}
@@ -249,16 +251,25 @@ function IntegrationsPanel({ form }: { form: UseFormReturnType<FormValues> }) {
                         }
                     }} />
             </Grid.Col>
-            <Grid.Col span={4}>(takes effect after restart)</Grid.Col>
-            <Grid.Col span={6}>When minimized</Grid.Col>
+            <Grid.Col span={4}>({t('settings.takesEffectAfterRestart')})</Grid.Col>
+            <Grid.Col span={6}>{t('settings.onMinimize')}</Grid.Col>
             <Grid.Col span={6}>
-                <SegmentedControl data={WindowMinimizeOptions as unknown as string[]}
+                <SegmentedControl
+                    data={[
+                        { value: 'minimize', label: t('settings.minimize') },
+                        { value: 'hide', label: t('settings.hide') }
+                    ]}
                     disabled={!form.values.app.showTrayIcon}
                     {...form.getInputProps("app.onMinimize")} />
             </Grid.Col>
-            <Grid.Col span={6}>When closed</Grid.Col>
+            <Grid.Col span={6}>{t('settings.onClose')}</Grid.Col>
             <Grid.Col span={6}>
-                <SegmentedControl data={WindowCloseOptions as unknown as string[]}
+                <SegmentedControl
+                    data={[
+                        { value: 'hide', label: t('settings.hide') },
+                        { value: 'close', label: t('common.close') },
+                        { value: 'quit', label: t('settings.quit') }
+                    ]}
                     disabled={!form.values.app.showTrayIcon}
                     {...form.getInputProps("app.onClose")} />
             </Grid.Col>
@@ -279,6 +290,7 @@ interface AppSettingsModalProps extends ModalState {
 
 export function AppSettingsModal(props: AppSettingsModalProps) {
     const config = useContext(ConfigContext);
+    const { t } = useTranslation();
     const form = useForm<FormValues>({
         initialValues: {
             servers: config.getServers(),
@@ -347,14 +359,14 @@ export function AppSettingsModal(props: AppSettingsModalProps) {
             onClose={props.close}
             onSave={onSave}
             centered
-            title="Application Settings"
+            title={t('modal.settings')}
         >
             <form>
                 <Tabs mih="33rem" defaultValue="servers">
                     <Tabs.List>
-                        <Tabs.Tab value="servers" p="lg">Servers</Tabs.Tab>
-                        <Tabs.Tab value="integrations" p="lg">Integrations</Tabs.Tab>
-                        {TAURI && <Tabs.Tab value="interface" p="lg">Interface</Tabs.Tab>}
+                        <Tabs.Tab value="servers" p="lg">{t('settings.general')}</Tabs.Tab>
+                        <Tabs.Tab value="integrations" p="lg">{t('settings.integrations')}</Tabs.Tab>
+                        {TAURI && <Tabs.Tab value="interface" p="lg">{t('settings.interface')}</Tabs.Tab>}
                     </Tabs.List>
 
                     <Tabs.Panel value="servers" pt="md">

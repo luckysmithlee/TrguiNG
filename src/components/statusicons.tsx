@@ -22,6 +22,7 @@ import * as Icon from "react-bootstrap-icons";
 import { Status } from "rpc/transmission";
 import ActiveIcon from "svg/icons/active.svg";
 import PausedIcon from "svg/icons/paused.svg";
+import { useTranslation } from "react-i18next";
 
 export function All() {
     const theme = useMantineTheme();

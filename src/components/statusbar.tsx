@@ -26,6 +26,7 @@ import { ColorSchemeToggle, ShowVersion } from "components/miscbuttons";
 import { ConfigContext, ServerConfigContext } from "config";
 import { useContextMenu } from "./contextmenu";
 import { MemoSectionsContextMenu, getSectionsMap } from "./sectionscontextmenu";
+import { useTranslation } from "react-i18next";
 
 const { TAURI, appWindow } = await import(/* webpackChunkName: "taurishim" */"taurishim");
 
@@ -41,6 +42,7 @@ export interface StatusbarProps {
 export function Statusbar({ session, torrents, filteredTorrents, selectedTorrents, hostname, showMisc }: StatusbarProps) {
     const config = useContext(ConfigContext);
     const serverConfig = useContext(ServerConfigContext);
+    const { t } = useTranslation();
 
     const serverFields = useMemo(() => ({
         downRateLimit: session !== undefined
@@ -118,31 +120,31 @@ export function Statusbar({ session, torrents, filteredTorrents, selectedTorrent
                     Show global speeds
                 </Menu.Item>
             </MemoSectionsContextMenu>
-            {sections[sectionsMap.Connection].visible &&
+            {sections[sectionsMap.Connection]?.visible &&
                 <div style={{ flex: "1 1 23%", order: sectionsMap.Connection }}>
                     <Box component="span" my="auto" mr="xs"><Icon.Diagram2 /></Box>
                     <span>{`${session?.version as string ?? "<not connected>"} at ${hostname}`}</span>
                 </div>}
-            {sections[sectionsMap["Download speed "]].visible &&
+            {sections[sectionsMap["Download speed "]]?.visible &&
                 <div style={{ flex: "1 1 15%", order: sectionsMap["Download speed "] }}>
                     <Box component="span" my="auto" mr="xs">{showGlobalSpeeds && <Icon.Globe />}<Icon.ArrowDown /></Box>
                     <span>{`${downRate}/s (${byteRateToHumanReadableStr(serverFields.downRateLimit * 1024)})`}</span>
                 </div>}
-            {sections[sectionsMap["Upload speed"]].visible &&
+            {sections[sectionsMap["Upload speed"]]?.visible &&
                 <div style={{ flex: "1 1 15%", order: sectionsMap["Upload speed"] }}>
                     <Box component="span" my="auto" mr="xs">{showGlobalSpeeds && <Icon.Globe />}<Icon.ArrowUp /></Box>
                     <span>{`${upRate}/s (${byteRateToHumanReadableStr(serverFields.upRateLimit * 1024)})`}</span>
                 </div>}
-            {sections[sectionsMap["Free space"]].visible &&
+            {sections[sectionsMap["Free space"]]?.visible &&
                 <div style={{ flex: "1 1 12%", order: sectionsMap["Free space"] }}>
                     <Box component="span" my="auto" mr="xs"><Icon.Hdd /></Box>
                     <span>{`Free: ${bytesToHumanReadableStr(serverFields.free)}`}</span>
                 </div>}
-            {sections[sectionsMap.Total].visible &&
+            {sections[sectionsMap.Total]?.visible &&
                 <div style={{ flex: "1 1 12%", order: sectionsMap.Total }}>
                     {`Total: ${sizeTotal}`}
                 </div>}
-            {sections[sectionsMap.Selected].visible &&
+            {sections[sectionsMap.Selected]?.visible &&
                 <div style={{ flex: "1 1 23%", order: sectionsMap.Selected }}>
                     {`Selected: ${sizeSelected}, done ${sizeDone}, left ${sizeLeft}`}
                 </div>}

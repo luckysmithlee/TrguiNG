@@ -35,6 +35,7 @@ import { ConfigContext } from "config";
 import { useResizeObserver } from "@mantine/hooks";
 import { MemoSectionsContextMenu, getSectionsMap } from "./sectionscontextmenu";
 import { useContextMenu } from "./contextmenu";
+import { useTranslation } from "react-i18next";
 
 interface DetailsProps {
     torrentId?: number,
@@ -472,44 +473,44 @@ function Details(props: DetailsProps) {
                 <MemoSectionsContextMenu
                     sections={tabs} setSections={setTabs}
                     contextMenuInfo={info} setContextMenuInfo={setInfo} />
-                {tabs[tabsMap.General].visible &&
+                {tabs[tabsMap.General]?.visible &&
                     <Tabs.Tab value="General" disabled={torrent === undefined} style={{ order: tabsMap.General }}>
                         <Group>
                             <Icon.InfoCircle size="1.1rem" />
                             General
                         </Group>
                     </Tabs.Tab>}
-                {tabs[tabsMap.Files].visible &&
+                {tabs[tabsMap.Files]?.visible &&
                     <Tabs.Tab value="Files" disabled={torrent === undefined} style={{ order: tabsMap.Files }}>
                         <Group>
                             <Icon.Files size="1.1rem" />
                             {`Files${torrent !== undefined ? ` (${torrent.files.length as number})` : ""}`}
                         </Group>
                     </Tabs.Tab>}
-                {tabs[tabsMap.Pieces].visible &&
+                {tabs[tabsMap.Pieces]?.visible &&
                     <Tabs.Tab value="Pieces" disabled={torrent === undefined} style={{ order: tabsMap.Pieces }}>
                         <Group>
                             <Icon.Grid3x2 size="1.1rem" />
                             {`Pieces${torrent !== undefined ? ` (${torrent.pieceCount as number})` : ""}`}
                         </Group>
                     </Tabs.Tab>}
-                {tabs[tabsMap.Peers].visible &&
+                {tabs[tabsMap.Peers]?.visible &&
                     <Tabs.Tab value="Peers" disabled={torrent === undefined} style={{ order: tabsMap.Peers }}>
                         <Group>
                             <Icon.People size="1.1rem" />
                             Peers
                         </Group>
                     </Tabs.Tab>}
-                {tabs[tabsMap.Trackers].visible &&
+                {tabs[tabsMap.Trackers]?.visible &&
                     <Tabs.Tab value="Trackers" disabled={torrent === undefined} style={{ order: tabsMap.Trackers }}>
                         <Group>
                             <Icon.Wifi size="1.1rem" />
                             Trackers
                         </Group>
                     </Tabs.Tab>}
-                {tabs[tabsMap["<spacer>"]].visible &&
+                {tabs[tabsMap["<spacer>"]]?.visible &&
                     <Box style={{ flexGrow: 1, order: tabsMap["<spacer>"] }} />}
-                {tabs[tabsMap["Server statistics"]].visible &&
+                {tabs[tabsMap["Server statistics"]]?.visible &&
                     <Tabs.Tab value="Server statistics" style={{ order: tabsMap["Server statistics"] }}>
                         <Group>
                             <Icon.ArrowDownUp size="1.1rem" />

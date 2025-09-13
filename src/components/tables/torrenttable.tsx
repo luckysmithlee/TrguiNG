@@ -39,6 +39,7 @@ import type { ModalCallbacks } from "components/modals/servermodals";
 import type { TorrentActionMethodsType } from "rpc/client";
 import * as Icon from "react-bootstrap-icons";
 import { useHotkeysContext } from "hotkeys";
+import { useTranslation } from "react-i18next";
 const { TAURI, invoke, copyToClipboard } = await import(/* webpackChunkName: "taurishim" */"taurishim");
 
 interface TableFieldProps {

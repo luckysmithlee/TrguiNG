@@ -25,9 +25,11 @@ import { VersionModal } from "components/modals/version";
 import { useDisclosure, useHotkeys } from "@mantine/hooks";
 import { modKeyString } from "trutil";
 import { useFontSize } from "themehooks";
+import { useTranslation } from "react-i18next";
 
 export function ColorSchemeToggle(props: { sz?: string, btn?: MantineNumberSize }) {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const { t } = useTranslation();
     const dark = colorScheme === "dark";
 
     useHotkeys([
@@ -39,7 +41,7 @@ export function ColorSchemeToggle(props: { sz?: string, btn?: MantineNumberSize 
             variant="default"
             size={props.btn}
             onClick={() => { toggleColorScheme(); }}
-            title={`Toggle color scheme (${modKeyString()} + U)`}
+            title={`${t('app.theme')} (${modKeyString()} + U)`}
             my="auto"
         >
             {dark
@@ -51,6 +53,7 @@ export function ColorSchemeToggle(props: { sz?: string, btn?: MantineNumberSize 
 
 export function ShowVersion(props: { sz?: string, btn?: MantineNumberSize }) {
     const [showVersionModal, { open: openVersionModal, close: closeVersionModal }] = useDisclosure(false);
+    const { t } = useTranslation();
 
     return (
         <>
@@ -58,7 +61,7 @@ export function ShowVersion(props: { sz?: string, btn?: MantineNumberSize }) {
             <ActionIcon
                 size={props.btn}
                 onClick={openVersionModal}
-                title="Show version information"
+                title={t('toolbar.about')}
                 ml="auto" my="auto"
             >
                 <Icon.InfoCircle size={props.sz} />
@@ -69,6 +72,7 @@ export function ShowVersion(props: { sz?: string, btn?: MantineNumberSize }) {
 
 export function FontSizeToggle() {
     const { toggle } = useFontSize();
+    const { t } = useTranslation();
 
     useHotkeys([
         ["mod + =", () => { toggle(); }],
@@ -79,7 +83,7 @@ export function FontSizeToggle() {
             variant="default"
             size="lg"
             onClick={() => { toggle(); }}
-            title={`Toggle font size (${modKeyString()} + =)`}
+            title={`${t('settings.fontSize')} (${modKeyString()} + =)`}
             my="auto"
         >
             <FontSizeIcon width="1.1rem" height="1.1rem" fill="currentColor" />
