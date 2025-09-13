@@ -35,7 +35,11 @@ export function LanguageSwitcher({ variant = 'icon', size = 'lg' }: LanguageSwit
   const { i18n, t } = useTranslation();
 
   const handleLanguageChange = useCallback((language: string) => {
-    i18n.changeLanguage(language);
+    i18n.changeLanguage(language).then(() => {
+      localStorage.setItem('trguing-language', language);
+    }).catch((error) => {
+      console.error('Failed to change language:', error);
+    });
   }, [i18n]);
 
   const currentLanguage = languages.find(lang => lang.value === i18n.language) || languages[0];

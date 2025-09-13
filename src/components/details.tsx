@@ -35,7 +35,6 @@ import { ConfigContext } from "config";
 import { useResizeObserver } from "@mantine/hooks";
 import { MemoSectionsContextMenu, getSectionsMap } from "./sectionscontextmenu";
 import { useContextMenu } from "./contextmenu";
-import { useTranslation } from "react-i18next";
 
 interface DetailsProps {
     torrentId?: number,

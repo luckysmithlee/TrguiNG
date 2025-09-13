@@ -53,7 +53,7 @@ export function InterfaceSettigsPanel<V extends InterfaceFormValues>(props: { fo
     const theme = useMantineTheme();
     const { style, setStyle } = useGlobalStyleOverrides();
     const [systemFonts, setSystemFonts] = useState<string[]>(["Default"]);
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         if (TAURI) {
@@ -142,8 +142,12 @@ export function InterfaceSettigsPanel<V extends InterfaceFormValues>(props: { fo
                                 ]}
                                 value={i18n.language}
                                 onChange={(e) => {
-                                    i18n.changeLanguage(e.currentTarget.value);
-                                    localStorage.setItem('i18nextLng', e.currentTarget.value);
+                                    const newLanguage = e.currentTarget.value;
+                                    i18n.changeLanguage(newLanguage).then(() => {
+                                        localStorage.setItem('trguing-language', newLanguage);
+                                    }).catch((error) => {
+                                        console.error('Failed to change language:', error);
+                                    });
                                 }}
                             />
                         </Grid.Col>

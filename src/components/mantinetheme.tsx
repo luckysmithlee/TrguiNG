@@ -22,7 +22,6 @@ import { useColorScheme } from "@mantine/hooks";
 import { ConfigContext } from "config";
 import { FontsizeContextProvider, GlobalStyleOverridesContext, useFontSize, useGlobalStyleOverrides } from "themehooks";
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const Theme: (colorScheme: ColorScheme, font?: string) => MantineThemeOverride = (colorScheme, font) => ({
     colorScheme,

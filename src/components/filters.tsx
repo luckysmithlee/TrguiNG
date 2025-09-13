@@ -27,7 +27,6 @@ import { Box, Button, Divider, Flex, Menu, Portal } from "@mantine/core";
 import { eventHasModKey, useForceRender } from "trutil";
 import { useContextMenu } from "./contextmenu";
 import { MemoSectionsContextMenu, getSectionsMap } from "./sectionscontextmenu";
-import { useTranslation } from "react-i18next";
 
 export interface TorrentFilter {
     id: string,
