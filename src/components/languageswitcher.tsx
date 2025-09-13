@@ -35,19 +35,25 @@ export function LanguageSwitcher({ variant = 'icon', size = 'lg' }: LanguageSwit
   const { i18n, t } = useTranslation();
 
   const handleLanguageChange = useCallback((language: string) => {
-    i18n.changeLanguage(language).then(() => {
+    if (i18n && typeof i18n.changeLanguage === 'function') {
+      i18n.changeLanguage(language).then(() => {
+        localStorage.setItem('trguing-language', language);
+      }).catch((error) => {
+        console.error('Failed to change language:', error);
+      });
+    } else {
+      // Fallback: directly set localStorage and reload
       localStorage.setItem('trguing-language', language);
-    }).catch((error) => {
-      console.error('Failed to change language:', error);
-    });
+      window.location.reload();
+    }
   }, [i18n]);
 
-  const currentLanguage = languages.find(lang => lang.value === i18n.language) || languages[0];
+  const currentLanguage = languages.find(lang => lang.value === (i18n?.language || 'en')) || languages[0];
 
   if (variant === 'segmented') {
     return (
       <SegmentedControl
-        value={i18n.language}
+        value={i18n?.language || 'en'}
         onChange={handleLanguageChange}
         data={languages.map(lang => ({
           value: lang.value,
@@ -77,7 +83,7 @@ export function LanguageSwitcher({ variant = 'icon', size = 'lg' }: LanguageSwit
             key={language.value}
             onClick={() => handleLanguageChange(language.value)}
             icon={<span>{language.flag}</span>}
-            rightSection={i18n.language === language.value ? <Icon.Check size="0.8rem" /> : undefined}
+            rightSection={(i18n?.language || 'en') === language.value ? <Icon.Check size="0.8rem" /> : undefined}
           >
             {language.label}
           </Menu.Item>

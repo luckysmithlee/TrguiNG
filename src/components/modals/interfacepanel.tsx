@@ -140,37 +140,43 @@ export function InterfaceSettigsPanel<V extends InterfaceFormValues>(props: { fo
                                     { value: 'en', label: 'English' },
                                     { value: 'zh', label: '中文' }
                                 ]}
-                                value={i18n.language}
+                                value={i18n?.language || 'en'}
                                 onChange={(e) => {
                                     const newLanguage = e.currentTarget.value;
-                                    i18n.changeLanguage(newLanguage).then(() => {
+                                    if (i18n && typeof i18n.changeLanguage === 'function') {
+                                        i18n.changeLanguage(newLanguage).then(() => {
+                                            localStorage.setItem('trguing-language', newLanguage);
+                                        }).catch((error) => {
+                                            console.error('Failed to change language:', error);
+                                        });
+                                    } else {
+                                        // Fallback: directly set localStorage and reload
                                         localStorage.setItem('trguing-language', newLanguage);
-                                    }).catch((error) => {
-                                        console.error('Failed to change language:', error);
-                                    });
+                                        window.location.reload();
+                                    }
                                 }}
                             />
                         </Grid.Col>
                         <Grid.Col span={3}>
-                            Font
+                            {t('settings.font')}
                         </Grid.Col>
                         <Grid.Col span={5}>
                             <NativeSelect data={systemFonts} value={style.font} onChange={(e) => { setFont(e.currentTarget.value); }} />
                         </Grid.Col>
                         <Grid.Col span={3}>
-                            Text color
+                            {t('settings.textColor')}
                         </Grid.Col>
                         <Grid.Col span={1}>
                             <ColorChooser value={style[theme.colorScheme].color ?? defaultColor} onChange={setTextColor} />
                         </Grid.Col>
                         <Grid.Col span={3}>
-                            Background
+                            {t('settings.background')}
                         </Grid.Col>
                         <Grid.Col span={1}>
                             <ColorChooser value={style[theme.colorScheme].backgroundColor ?? defaultBg} onChange={setBgColor} />
                         </Grid.Col>
                         <Grid.Col span={4} />
-                        <Grid.Col span={3}>Progress bars</Grid.Col>
+                        <Grid.Col span={3}>{t('settings.progressBars')}</Grid.Col>
                         <Grid.Col span={3}>
                             <Checkbox label="Colorful"
                                 {...props.form.getInputProps("interface.colorfulProgressbars", { type: "checkbox" })} />
